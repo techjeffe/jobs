@@ -383,13 +383,15 @@ function filterRows(rows) {
 
 function componentMarkup(row) {
   if (!row.new_components) return "—";
-  const labels = [
-    ["digitality", "Digital"],
-    ["routine_information_processing", "Routine info"],
-    ["physical_world_dependency", "Physical"],
-    ["human_relationship_dependency", "Relational"],
-    ["judgment_accountability_dependency", "Judgment"]
-  ];
+  const labels = row.component_labels && row.component_labels.length
+    ? row.component_labels
+    : [
+        ["digitality", "Digital"],
+        ["routine_information_processing", "Routine info"],
+        ["physical_world_dependency", "Physical"],
+        ["human_relationship_dependency", "Relational"],
+        ["judgment_accountability_dependency", "Judgment"]
+      ];
   return `<div class="component-list">` + labels.map(([key, label]) =>
     `<div>${label}: <strong>${row.new_components[key]}</strong></div>`
   ).join("") + `</div>`;
