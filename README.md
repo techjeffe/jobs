@@ -1,6 +1,6 @@
 # AI Exposure of the US Job Market
 
-Analyzing how susceptible every occupation in the US economy is to AI and automation, using data from the Bureau of Labor Statistics [Occupational Outlook Handbook](https://www.bls.gov/ooh/) (OOH).
+A research tool for exploring Bureau of Labor Statistics [Occupational Outlook Handbook](https://www.bls.gov/ooh/) (OOH) data and one fork-specific attempt to score how exposed different occupations may be to AI.
 
 This fork builds on Josh Kale's restoration of the original project after Andrej Karpathy briefly shared it and took it down. Josh preserved the pipeline, data, and visualization so the work did not disappear.
 
@@ -9,6 +9,8 @@ This fork builds on Josh Kale's restoration of the original project after Andrej
 ## What's here
 
 The BLS OOH covers **342 occupations** spanning every sector of the US economy, with detailed data on job duties, work environment, education requirements, pay, and employment projections. We scraped all of it, scored each occupation's AI exposure using an LLM, and built an interactive treemap visualization.
+
+This repository is best understood as an exploration tool, not a paper or a rigorous labor-economics model. The scores are useful for inspection and debate, but they are still heuristic judgments produced by an LLM-guided pipeline.
 
 ## Data pipeline
 
@@ -44,6 +46,12 @@ Instead of asking the model for one final score directly, the pipeline now asks 
 - dependence on judgment and accountability
 
 The final exposure score is then derived in code from those components. This reduces how much the final number depends on a single highly prescriptive prompt and makes the scoring logic easier to inspect and compare across occupations.
+
+**What this score is not:**
+- It is not a prediction that a job disappears.
+- It does not capture demand elasticity, regulation, union power, labor shortages, or cultural preferences for human work.
+- It does not tell you whether employment in a field will rise or fall overall.
+- High exposure can mean a job is transformed, compressed, or reorganized rather than eliminated.
 
 **Calibration examples from the dataset:**
 

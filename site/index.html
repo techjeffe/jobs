@@ -96,6 +96,10 @@ body {
   border-color: rgba(255,255,255,0.22);
 }
 
+.toggle-group.compact .toggle-btn {
+  flex: 1;
+}
+
 .tier-bar {
   display: flex;
   flex-direction: column;
@@ -263,6 +267,12 @@ canvas#canvas {
   </div>
 
   <div class="stat-section">
+    <h3>Layout</h3>
+    <div class="toggle-group compact" id="layoutToggle"></div>
+    <div class="stat-label" id="layoutDescription">—</div>
+  </div>
+
+  <div class="stat-section">
     <h3>Total jobs</h3>
     <div class="stat-big" id="statTotalJobs">—</div>
   </div>
@@ -301,9 +311,9 @@ canvas#canvas {
   </div>
 
   <div class="gradient-legend">
-    <span>Low</span>
+    <span id="legendMinLabel">Low</span>
     <canvas id="gradientLegend" width="80" height="8"></canvas>
-    <span>High</span>
+    <span id="legendMaxLabel">High</span>
   </div>
 </div>
 
@@ -343,6 +353,24 @@ function exposureColor(score) {
 
 function exposureColorCSS(score, alpha) {
   const [r, g, b] = exposureColor(score);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function outlookColorCSS(outlook, alpha) {
+  if (outlook == null) return `rgba(128,128,128,${alpha})`;
+  const t = Math.max(0, Math.min(1, (outlook + 12) / 24));
+  let r, g, b;
+  if (t < 0.5) {
+    const s = t / 0.5;
+    r = Math.round(220 - s * 40);
+    g = Math.round(60 + s * 100);
+    b = Math.round(50 - s * 20);
+  } else {
+    const s = (t - 0.5) / 0.5;
+    r = Math.round(180 - s * 130);
+    g = Math.round(160 + s * 10);
+    b = Math.round(30 + s * 30);
+  }
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
@@ -430,6 +458,7 @@ let allData = [];
 let rects = [];
 let hovered = null;
 let currentView = "full";
+let currentLayout = "treemap";
 let colorMin = 0;
 let colorMax = 10;
 
@@ -489,6 +518,11 @@ function layout() {
   const tw = w - MARGIN * 2;
   const th = h - MARGIN * 2;
 
+  if (currentLayout === "outlook_columns") {
+    layoutOutlookColumns(tx, ty, tw, th);
+    return;
+  }
+
   const byCategory = {};
   for (const d of data) {
     const cat = d.category;
@@ -518,6 +552,47 @@ function layout() {
   }
 }
 
+function layoutOutlookColumns(tx, ty, tw, th) {
+  const colGap = 8;
+  const headerH = 22;
+  const bodyY = ty + headerH;
+  const bodyH = th - headerH;
+  const colW = (tw - colGap * 10) / 11;
+
+  rects = [];
+  for (let exposure = 0; exposure <= 10; exposure++) {
+    const items = data
+      .filter(d => d.exposure === exposure && d.jobs)
+      .sort((a, b) => (b.outlook ?? -999) - (a.outlook ?? -999));
+
+    const x = tx + exposure * (colW + colGap);
+    const totalJobs = items.reduce((sum, item) => sum + (item.jobs || 0), 0);
+    let y = bodyY;
+
+    rects.push({
+      isColumnHeader: true,
+      exposure,
+      rx: x,
+      ry: ty,
+      rw: colW,
+      rh: headerH - 4,
+    });
+
+    for (const item of items) {
+      const fraction = totalJobs > 0 ? (item.jobs || 0) / totalJobs : 0;
+      const itemH = Math.max(4, bodyH * fraction);
+      rects.push({
+        ...item,
+        rx: x,
+        ry: y,
+        rw: colW,
+        rh: itemH,
+      });
+      y += itemH;
+    }
+  }
+}
+
 function setColorScale() {
   const exposures = data.filter(d => d.exposure != null).map(d => d.exposure);
   colorMin = exposures.length ? Math.min(...exposures) : 0;
@@ -534,6 +609,28 @@ function renderViewToggle() {
   });
 }
 
+function renderLayoutToggle() {
+  const wrap = document.getElementById("layoutToggle");
+  const layouts = [
+    { key: "treemap", label: "Treemap" },
+    { key: "outlook_columns", label: "Exposure vs Outlook" },
+  ];
+  wrap.innerHTML = layouts.map(layout =>
+    `<button class="toggle-btn ${layout.key === currentLayout ? 'active' : ''}" data-layout="${layout.key}">${layout.label}</button>`
+  ).join("");
+  wrap.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentLayout = btn.dataset.layout;
+      hovered = null;
+      hideTooltip();
+      computeStats();
+      drawGradientLegend();
+      resize();
+      renderLayoutToggle();
+    });
+  });
+}
+
 function applyView(viewKey) {
   currentView = viewKey;
   const config = VIEW_CONFIG[viewKey] || VIEW_CONFIG.full;
@@ -543,6 +640,7 @@ function applyView(viewKey) {
   drawGradientLegend();
   resize();
   renderViewToggle();
+  renderLayoutToggle();
 }
 
 function draw() {
@@ -553,6 +651,16 @@ function draw() {
   ctx.fillRect(0, 0, w / dpr, h / dpr);
 
   for (const r of rects) {
+    if (r.isColumnHeader) {
+      ctx.font = "600 12px -apple-system, system-ui, sans-serif";
+      ctx.fillStyle = "rgba(255,255,255,0.55)";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillText(String(r.exposure), r.rx + r.rw / 2, r.ry + 2);
+      ctx.textAlign = "left";
+      continue;
+    }
+
     const isHovered = r === hovered;
 
     const g = GAP / 2;
@@ -564,7 +672,9 @@ function draw() {
     if (rw <= 0 || rh <= 0) continue;
 
     const fillAlpha = isHovered ? 0.8 : 0.5;
-    ctx.fillStyle = exposureColorCSS(r.exposure, fillAlpha);
+    ctx.fillStyle = currentLayout === "outlook_columns"
+      ? outlookColorCSS(r.outlook, fillAlpha)
+      : exposureColorCSS(r.exposure, fillAlpha);
     ctx.fillRect(rx, ry, rw, rh);
 
     if (isHovered) {
@@ -588,8 +698,11 @@ function draw() {
       ctx.fillText(r.title, rx + 5, ry + 4);
 
       if (rh > 34 && rw > 60) {
-        const info = (r.exposure != null ? r.exposure + "/10" : "") +
-                     (r.jobs ? " \u00b7 " + formatNumber(r.jobs) + " jobs" : "");
+        const info = currentLayout === "outlook_columns"
+          ? `${r.outlook != null ? (r.outlook > 0 ? "+" : "") + r.outlook + "%" : "—"} outlook` +
+            (r.jobs ? " \u00b7 " + formatNumber(r.jobs) + " jobs" : "")
+          : (r.exposure != null ? r.exposure + "/10" : "") +
+            (r.jobs ? " \u00b7 " + formatNumber(r.jobs) + " jobs" : "");
         ctx.font = `400 ${Math.max(8, fontSize - 2)}px -apple-system, system-ui, sans-serif`;
         ctx.fillStyle = "rgba(255,255,255,0.5)";
         ctx.fillText(info, rx + 5, ry + 4 + fontSize + 2);
@@ -606,6 +719,7 @@ function hitTest(mx, my) {
   const cy = my;
   for (let i = rects.length - 1; i >= 0; i--) {
     const r = rects[i];
+    if (r.isColumnHeader) continue;
     if (cx >= r.rx && cx < r.rx + r.rw && cy >= r.ry && cy < r.ry + r.rh) {
       return r;
     }
@@ -633,7 +747,9 @@ function showTooltip(d, mx, my) {
   const score = d.exposure != null ? d.exposure : null;
   if (score != null) {
     const barWidth = score * 10;
-    const color = exposureColorCSS(score, 1);
+    const color = currentLayout === "outlook_columns"
+      ? outlookColorCSS(d.outlook, 1)
+      : exposureColorCSS(score, 1);
     tt.querySelector(".tt-exposure").innerHTML =
       `<span style="color:${color};font-weight:600;">AI Exposure: ${score}/10</span>` +
       `<div style="margin-top:3px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;">` +
@@ -725,6 +841,14 @@ function computeStats() {
     `<span style="color:${exposureColorCSS(weightedAvg, 1)}">${weightedAvg.toFixed(1)}</span>`;
   document.getElementById("viewDescription").textContent =
     `${VIEW_CONFIG[currentView].description} Scale: ${colorMin}-${colorMax}.`;
+  document.getElementById("layoutDescription").textContent =
+    currentLayout === "outlook_columns"
+      ? "Columns are exposure scores; jobs stack by outlook and color shows projected growth or decline."
+      : "Treemap by employment with color showing AI exposure for the current filtered subset.";
+  document.getElementById("legendMinLabel").textContent =
+    currentLayout === "outlook_columns" ? "Declining" : "Low";
+  document.getElementById("legendMaxLabel").textContent =
+    currentLayout === "outlook_columns" ? "Growing" : "High";
 
   // Histogram
   const maxHist = Math.max(...histogram);
@@ -846,8 +970,13 @@ function drawGradientLegend() {
   const c = document.getElementById("gradientLegend");
   const gctx = c.getContext("2d");
   for (let x = 0; x < 80; x++) {
-    const score = colorMin + (x / 79) * (colorMax - colorMin);
-    gctx.fillStyle = exposureColorCSS(score, 1);
+    if (currentLayout === "outlook_columns") {
+      const outlook = -12 + (x / 79) * 24;
+      gctx.fillStyle = outlookColorCSS(outlook, 1);
+    } else {
+      const score = colorMin + (x / 79) * (colorMax - colorMin);
+      gctx.fillStyle = exposureColorCSS(score, 1);
+    }
     gctx.fillRect(x, 0, 1, 8);
   }
 }
