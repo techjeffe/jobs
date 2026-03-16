@@ -282,7 +282,7 @@
       "systemic_accountability": 10
     },
     "rationale": "The core value of this occupation is the physical manipulation and repair of complex, high-stakes machinery in unstructured, often cramped, and volatile environments where AI cannot currently operate. Because the work involves life-critical safety and strict FAA regulatory liability, the human technician acts as the ultimate point of accountability, making full automation or agentic substitution effectively impossible under current legal and safety frameworks.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "airline-and-commercial-pilots",
@@ -491,7 +491,7 @@
       "systemic_accountability": 2
     },
     "rationale": "The core value of this occupation is the physical performance and the human-to-human connection inherent in spectator sports; an AI-controlled robot, while technically capable of performing physical tasks, would not be accepted by the market as a substitute for a human athlete. The work occurs in highly unpredictable, high-stakes physical environments where the 'product' is the authentic human struggle, skill, and identity, making it immune to digital substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "athletic-trainers",
@@ -624,7 +624,7 @@
       "systemic_accountability": 4
     },
     "rationale": "The core value of this occupation is a physical, high-touch service performed on a human body, which cannot be digitized or offloaded to software. While the work requires aesthetic judgment and technical skill, the primary product is the human-to-human interaction and the physical transformation of the client, making it highly resistant to AI substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "bartenders",
@@ -871,7 +871,7 @@
       "systemic_accountability": 9
     },
     "rationale": "While the diagnostic data produced is digital, the core value of the role is inextricably linked to physical patient interaction, invasive procedural assistance, and real-time monitoring of unstable physiological states. The high necessity for human empathy, physical patient handling, and the critical legal/ethical liability associated with life-sustaining procedures makes full agentic substitution impossible in the foreseeable future.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "career-and-technical-education-teachers",
@@ -890,7 +890,7 @@
       "systemic_accountability": 8
     },
     "rationale": "While AI can generate curriculum and instructional materials, the core value of CTE teaching is the physical, in-person demonstration of trade skills and the real-time supervision of students in hazardous or complex workshop environments. The role requires high-stakes human judgment regarding safety, mentorship, and the pedagogical adaptation to individual student needs, which cannot be delegated to a digital agent without losing the essential human-to-human trust and liability framework.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "carpenters",
@@ -966,7 +966,7 @@
       "systemic_accountability": 6
     },
     "rationale": "While menu planning and administrative tasks have high digital potential, the core value of the occupation is the physical creation of food and the real-time management of a high-pressure, unpredictable kitchen environment. The role relies heavily on human sensory judgment, leadership, and the 'human touch' of culinary artistry, which remains a significant barrier to full AI substitution.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "chemical-engineers",
@@ -1061,7 +1061,7 @@
       "systemic_accountability": 8
     },
     "rationale": "The core value of chiropractic care is physical, hands-on manipulation of the human body, which cannot be digitized or delegated to software. While diagnostic and treatment planning involve cognitive synthesis, the necessity for human touch, patient trust, and the high-stakes legal liability associated with physical spinal adjustments make this role highly resistant to AI substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "civil-engineering-technicians",
@@ -1156,7 +1156,7 @@
       "systemic_accountability": 5
     },
     "rationale": "While AI can analyze performance data and suggest strategies, the core value of coaching is rooted in human mentorship, psychological motivation, and the management of interpersonal team dynamics, which cannot be substituted by software. The physical, real-time nature of sports environments and the necessity of a human authority figure to command trust and leadership make this role highly resistant to agentic automation.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "community-health-workers",
@@ -1175,7 +1175,7 @@
       "systemic_accountability": 5
     },
     "rationale": "The core value of this role is rooted in human-to-human connection, cultural mediation, and the physical presence required for outreach and advocacy, which cannot be replaced by digital agents. While AI can assist with data and resource navigation, the 'agentic output' is low because the job's efficacy depends on building trust, empathy, and navigating the unpredictable, unstructured environments of clients' homes and communities.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "compensation-and-benefits-managers",
@@ -1631,7 +1631,7 @@
       "systemic_accountability": 1
     },
     "rationale": "The core value of dance is rooted in human embodiment, physical presence, and the shared experience between performer and audience, making it highly resistant to digital substitution. While choreographic patterns can be digitized, the artistic synthesis and the 'human-to-human' connection required for performance remain fundamentally tied to human identity and physical reality, which AI cannot authentically replicate.",
-    "exposure": 4
+    "exposure": 2
   },
   {
     "slug": "data-scientists",
@@ -1764,7 +1764,7 @@
       "systemic_accountability": 9
     },
     "rationale": "Dentistry is fundamentally a physical, invasive medical practice requiring high-dexterity manipulation of biological tissue, which cannot be replaced by digital agents. While diagnostic imaging and planning are increasingly digital, the execution of treatment remains a high-stakes, human-centric interaction that requires professional liability and the physical presence of a practitioner to manage patient comfort, safety, and unpredictable anatomical variables.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "desktop-publishers",
@@ -2049,7 +2049,7 @@
       "systemic_accountability": 9
     },
     "rationale": "While administrative tasks like scheduling and data reporting have some digital output potential, the core of the principal's role involves high-stakes human mediation, crisis management in unpredictable social environments, and moral/legal accountability for student welfare. The necessity for a human presence to provide leadership, empathy, and institutional trust makes the role highly resistant to substitution by autonomous agents.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "elevator-installers-and-repairers",
@@ -2106,7 +2106,7 @@
       "systemic_accountability": 9
     },
     "rationale": "The core value of this occupation is physical, real-time intervention in highly unpredictable, unstructured environments where human presence is essential for patient stabilization and transport. While AI can assist in diagnostics, the physical nature of the work, the requirement for human touch, and the non-delegatable legal and ethical accountability for life-or-death decisions make the agentic output potential extremely low.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "entertainment-and-recreation-managers",
@@ -2467,7 +2467,7 @@
       "systemic_accountability": 9
     },
     "rationale": "The core value of a flight attendant is physical presence, emergency intervention, and the exercise of human authority to maintain cabin safety, which cannot be digitized or delegated to software. While routine service tasks could be automated, the high-stakes, unpredictable nature of in-flight emergencies and the legal requirement for human oversight in safety-critical environments make this role highly resistant to AI substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "tile-and-marble-setters",
@@ -2657,7 +2657,7 @@
       "systemic_accountability": 9
     },
     "rationale": "The core value of this occupation is rooted in the physical, emotional, and ritualistic handling of the deceased and the provision of comfort to the bereaved, which cannot be substituted by digital artifacts. While administrative tasks are automatable, the necessity for human presence, empathy, and the legal/ethical weight of managing human remains and final rites creates an extremely high barrier to AI substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "gaming-services-occupations",
@@ -3436,7 +3436,7 @@
       "systemic_accountability": 10
     },
     "rationale": "While AI can assist in legal research and document drafting, the core output of a judge\u2014a binding legal ruling\u2014requires human moral authority, social legitimacy, and the assumption of life-altering liability that cannot be delegated to software. The judicial process is fundamentally rooted in the necessity of a human arbiter to ensure fairness, interpret intent, and maintain public trust in the rule of law, rendering the agentic potential extremely low despite the high cognitive complexity of the work.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "kindergarten-and-elementary-school-teachers",
@@ -3569,7 +3569,7 @@
       "systemic_accountability": 8
     },
     "rationale": "The core value of this role is physical, bedside care and the human-to-human bond, which cannot be substituted by digital artifacts or software agents. While the job involves monitoring and documentation, the primary tasks\u2014physical assistance, patient comfort, and real-time clinical judgment in unpredictable, high-stakes environments\u2014require a human presence that is legally and ethically non-delegatable.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "loan-officers",
@@ -3759,7 +3759,7 @@
       "systemic_accountability": 9
     },
     "rationale": "The core value of this profession is rooted in the human-to-human therapeutic alliance, where empathy, trust, and shared lived experience are the primary mechanisms of change, rendering AI substitution fundamentally inadequate. While AI can assist with documentation or data-driven insights, the high-stakes nature of mental health, legal liability, and the requirement for authentic human connection make the occupation highly resistant to agentic automation.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "brickmasons-blockmasons-and-stonemasons",
@@ -3797,7 +3797,7 @@
       "systemic_accountability": 6
     },
     "rationale": "The core value of massage therapy is the physical, tactile, and interpersonal interaction between two human beings, which cannot be digitized or delegated to software. While the cognitive aspects of assessing a client's needs are complex, the delivery of the service is inherently physical and relies heavily on human empathy, trust, and the social legitimacy of a human practitioner.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "material-moving-machine-operators",
@@ -4310,7 +4310,7 @@
       "systemic_accountability": 9
     },
     "rationale": "While the imaging output is digital, the core value of the role involves the physical, high-stakes administration of radioactive materials to human patients, which requires real-time physical presence and safety monitoring. The necessity for human empathy, patient stabilization, and the profound legal and ethical liability associated with handling hazardous materials and medical procedures makes this role highly resistant to full agentic substitution.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "nuclear-technicians",
@@ -4348,7 +4348,7 @@
       "systemic_accountability": 10
     },
     "rationale": "The core value of this occupation is the physical, real-time management of human life, which requires physical presence, tactile intervention, and high-stakes, non-delegatable accountability. While AI can assist with diagnostics and data synthesis, the necessity for human judgment in volatile, life-critical clinical environments and the legal requirement for human liability make the agentic output potential extremely low.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "nursing-assistants",
@@ -4367,7 +4367,7 @@
       "systemic_accountability": 6
     },
     "rationale": "The core value of this occupation is physical, in-person care, which cannot be digitized or executed via software, resulting in a very low agentic output potential. The work environment is highly unpredictable due to the variable physical needs and health states of patients, and the role relies heavily on human empathy, touch, and presence, which are essential to the product of 'care'.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "occupational-health-and-safety-specialists-and-technicians",
@@ -4405,7 +4405,7 @@
       "systemic_accountability": 9
     },
     "rationale": "Occupational therapy is fundamentally rooted in physical, in-person interaction and the therapeutic human-to-human bond, making it highly resistant to digital substitution. The work requires navigating highly variable, unstructured environments\u2014such as a patient's home or a clinical setting\u2014while carrying significant legal and ethical liability for the physical safety and recovery outcomes of vulnerable individuals.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "occupational-therapy-assistants-and-aides",
@@ -4424,7 +4424,7 @@
       "systemic_accountability": 8
     },
     "rationale": "The core value of this occupation is rooted in physical, in-person therapeutic intervention and the human-to-human bond required to motivate and assist patients with physical disabilities. Because the work involves high-stakes physical interaction in unpredictable clinical environments and requires direct human empathy and liability for patient safety, it is highly resistant to digital substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "oil-and-gas-workers",
@@ -4519,7 +4519,7 @@
       "systemic_accountability": 9
     },
     "rationale": "While AI can assist in the design and fabrication of devices, the core value of this role is the physical, high-stakes interaction with a patient's unique anatomy and the empathetic, trust-based clinical judgment required to ensure a device is functional and safe. The physical variability of human bodies and the critical nature of medical liability make this role highly resistant to full agentic substitution, as the 'product' is a successful physical integration between a human body and a custom-fitted device.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "painters-construction-and-maintenance",
@@ -4728,7 +4728,7 @@
       "systemic_accountability": 8
     },
     "rationale": "The core value of this occupation is physical, hands-on patient care and the human-to-human therapeutic bond, which cannot be replaced by digital artifacts or software agents. While some clerical or observational tasks could be automated, the necessity for real-time physical adjustment, safety monitoring, and empathetic interaction in a variable clinical environment makes this role highly resistant to agentic substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "physical-therapists",
@@ -4747,7 +4747,7 @@
       "systemic_accountability": 9
     },
     "rationale": "Physical therapy is fundamentally a tactile, in-person service requiring real-time physical manipulation and human-to-human motivation, which cannot be replaced by digital artifacts. While AI can assist in diagnostic planning, the core value lies in the physical interaction, the therapist's professional liability for patient safety during rehabilitation, and the empathetic bond necessary to guide patients through recovery.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "physician-assistants",
@@ -4766,7 +4766,7 @@
       "systemic_accountability": 9
     },
     "rationale": "While AI can assist in diagnostics and data synthesis, the core value of a PA involves physical interventions (stitching, setting bones, physical exams) and high-stakes, real-time decision-making in unpredictable clinical environments. The requirement for human empathy, trust, and the legal/ethical necessity of a human practitioner to hold accountability for life-altering medical outcomes makes full substitution by an autonomous agent highly improbable.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "physicians-and-surgeons",
@@ -4842,7 +4842,7 @@
       "systemic_accountability": 9
     },
     "rationale": "Podiatry is fundamentally defined by physical, invasive, and surgical interventions on the human body, which cannot be replaced by digital agents. While AI can assist in diagnostics, the core value relies on the physical presence, manual dexterity, and the high-stakes legal and ethical accountability of a licensed human practitioner.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "police-and-detectives",
@@ -4994,7 +4994,7 @@
       "systemic_accountability": 8
     },
     "rationale": "The core value of this occupation is rooted in the physical, emotional, and social development of children, which requires a human presence for trust, empathy, and safety; an AI cannot substitute for the human-to-human bond or the physical supervision required in an unpredictable, high-stakes environment. While lesson planning and record-keeping are digitalizable, the primary 'product'\u2014the nurturing and guidance of young children\u2014is inherently non-agentic and requires constant, real-time human accountability.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "private-detectives-and-investigators",
@@ -5127,7 +5127,7 @@
       "systemic_accountability": 8
     },
     "rationale": "The core value of this role is rooted in physical, in-person care, emotional support, and the immediate physical management of potentially violent patients, which cannot be substituted by digital agents. The high environmental unpredictability and the requirement for human presence, empathy, and physical intervention make this occupation highly resistant to automation, despite the routine nature of some data-recording tasks.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "psychologists",
@@ -5146,7 +5146,7 @@
       "systemic_accountability": 9
     },
     "rationale": "While AI can assist with diagnostic data and pattern recognition, the core value of psychology is rooted in the therapeutic alliance, empathy, and the human-to-human connection, which cannot be substituted by a digital agent. The high stakes of mental health treatment and the legal/ethical requirements for licensure and accountability necessitate a human practitioner, rendering the agentic output potential very low despite the cognitive complexity of the work.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "public-relations-managers",
@@ -5260,7 +5260,7 @@
       "systemic_accountability": 9
     },
     "rationale": "While the operation of radiation equipment is highly technical, the core value of the role is the physical positioning of patients, real-time monitoring for adverse reactions, and the provision of empathetic human care in a high-stakes medical environment. The requirement for human presence to ensure patient safety, provide emotional support, and accept legal liability for life-altering radiation delivery makes full automation or agentic substitution effectively impossible.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "radiologic-technologists",
@@ -5355,7 +5355,7 @@
       "systemic_accountability": 5
     },
     "rationale": "The core value of this occupation is the physical, in-person facilitation of human interaction, motivation, and safety, which cannot be substituted by digital artifacts. While administrative tasks are automatable, the primary work occurs in unstructured, dynamic environments requiring real-time human presence, empathy, and physical intervention that an AI agent cannot replicate.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "recreational-therapists",
@@ -5374,7 +5374,7 @@
       "systemic_accountability": 7
     },
     "rationale": "The core value of this role is rooted in human-to-human connection, empathy, and physical presence, which cannot be substituted by digital artifacts or software agents. While the planning phase involves complex synthesis, the execution requires navigating unpredictable, real-world physical environments and managing the high-stakes emotional and physical well-being of vulnerable patients, necessitating human accountability.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "registered-nurses",
@@ -5393,7 +5393,7 @@
       "systemic_accountability": 10
     },
     "rationale": "Nursing is fundamentally defined by physical, high-stakes interaction with human bodies in unpredictable clinical environments, rendering the core value non-agentic. While AI can assist with data synthesis, the requirement for real-time physical intervention, emotional labor, and non-delegatable legal and ethical liability for patient life makes human presence an ontological necessity rather than a replaceable digital function.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "rehabilitation-counselors",
@@ -5412,7 +5412,7 @@
       "systemic_accountability": 8
     },
     "rationale": "The core value of this role is rooted in human-to-human connection, empathy, and the establishment of trust, which are not substitutable by digital agents. While AI can assist with administrative tasks or resource matching, the primary output\u2014counseling, advocacy, and personalized rehabilitation planning\u2014requires human presence and ethical accountability that cannot be delegated to software.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "respiratory-therapists",
@@ -5431,7 +5431,7 @@
       "systemic_accountability": 9
     },
     "rationale": "Respiratory therapy is fundamentally a physical, bedside intervention involving high-stakes, real-time physiological management of patients in volatile clinical environments. While AI can assist in monitoring and data analysis, the core value\u2014physical airway clearance, emergency ventilator management, and the human-to-human trust required for patient compliance\u2014cannot be delegated to software, as the physical variability of human anatomy and the legal necessity of human accountability remain absolute.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "retail-sales-workers",
@@ -5659,7 +5659,7 @@
       "systemic_accountability": 6
     },
     "rationale": "The core value of this occupation is the physical, in-person application of treatments to a human body, which cannot be replaced by digital artifacts or remote software execution. While AI can assist in skin analysis or routine scheduling, the necessity for human touch, physical presence, and the liability associated with performing chemical or mechanical procedures on a client's skin makes the role highly resistant to automation.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "small-engine-mechanics",
@@ -5849,7 +5849,7 @@
       "systemic_accountability": 8
     },
     "rationale": "While AI can assist with diagnostic data and exercise planning, the core value of this role is the physical, real-time, and empathetic interaction required to rehabilitate speech and swallowing functions, which cannot be delegated to a digital agent. The work involves high-stakes clinical judgment and physical intervention (e.g., swallowing therapy) that requires a human practitioner to hold legal and ethical responsibility for patient outcomes.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "stationary-engineers-and-boiler-operators",
@@ -5906,7 +5906,7 @@
       "systemic_accountability": 9
     },
     "rationale": "The core value of this role is physical, real-time intervention in a high-stakes, sterile, and unpredictable biological environment where human presence is essential for safety and liability. While software can assist in managing equipment, the physical manipulation of human tissue and the immediate, non-delegatable accountability for patient life make this role highly resistant to AI substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "survey-researchers",
@@ -6115,7 +6115,7 @@
       "systemic_accountability": 3
     },
     "rationale": "While the informational component of a tour could be digitized, the core value of the occupation is the live, human-led experience, social facilitation, and real-time physical management of a group in unpredictable environments. Because the product is fundamentally an interpersonal and experiential service, AI cannot substitute for the human presence, empathy, and physical leadership required to manage group dynamics and safety.",
-    "exposure": 3
+    "exposure": 2
   },
   {
     "slug": "training-and-development-managers",
@@ -6267,7 +6267,7 @@
       "systemic_accountability": 9
     },
     "rationale": "Veterinary medicine is fundamentally anchored in physical, real-time manipulation of living organisms in highly unpredictable environments, ranging from sterile clinics to remote, volatile farm settings. While AI can assist in diagnostics, the core value\u2014performing surgery, managing animal welfare, and navigating the emotional/ethical complexities of client communication and euthanasia\u2014requires a human presence that cannot be substituted by digital agents.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "veterinary-assistants-and-laboratory-animal-caretakers",
@@ -6305,7 +6305,7 @@
       "systemic_accountability": 7
     },
     "rationale": "The core value of this role is rooted in physical, real-time interaction with unpredictable biological subjects, requiring manual dexterity and physical restraint that software cannot replicate. While diagnostic data processing is automatable, the necessity for human empathy, physical presence during medical procedures, and the high-stakes accountability for animal welfare make this role highly resistant to agentic substitution.",
-    "exposure": 2
+    "exposure": 1
   },
   {
     "slug": "waiters-and-waitresses",
