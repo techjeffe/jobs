@@ -94,6 +94,9 @@ uv run python score.py
 # Build website data
 uv run python build_site_data.py
 
+# Compare the current scores against the pre-refactor baseline
+python compare_scores.py
+
 # Serve the site locally
 cd site && python -m http.server 8000
 ```
