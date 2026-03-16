@@ -15,7 +15,7 @@ The BLS OOH covers **342 occupations** spanning every sector of the US economy, 
 1. **Scrape** (`scrape.py`) — Playwright (non-headless, BLS blocks bots) downloads raw HTML for all 342 occupation pages into `html/`.
 2. **Parse** (`parse_detail.py`, `process.py`) — BeautifulSoup converts raw HTML into clean Markdown files in `pages/`.
 3. **Tabulate** (`make_csv.py`) — Extracts structured fields (pay, education, job count, growth outlook, SOC code) into `occupations.csv`.
-4. **Score** (`score.py`) — Sends each occupation's Markdown description to an LLM (Gemini Flash via OpenRouter) with a scoring rubric. Each occupation gets an AI Exposure score from 0-10 with a rationale. Results saved to `scores.json`.
+4. **Score** (`score.py`) — Sends each occupation's Markdown description to an LLM (Gemini Flash via OpenRouter), asks for component scores (digitality, routine information processing, physical-world dependence, human-relationship dependence, judgment/accountability), and derives a final AI Exposure score from 0-10 in code. Results saved to `scores.json`.
 5. **Build site data** (`build_site_data.py`) — Merges CSV stats and AI exposure scores into a compact `site/data.json` for the frontend.
 6. **Website** (`site/index.html`) — Interactive treemap visualization where area = employment and color = AI exposure (green to red).
 
@@ -25,7 +25,7 @@ The BLS OOH covers **342 occupations** spanning every sector of the US economy, 
 |------|-------------|
 | `occupations.json` | Master list of 342 occupations with title, URL, category, slug |
 | `occupations.csv` | Summary stats: pay, education, job count, growth projections |
-| `scores.json` | AI exposure scores (0-10) with rationales for all 342 occupations |
+| `scores.json` | AI exposure scores, component subscores, and rationales for all 342 occupations |
 | `html/` | Raw HTML pages from BLS (source of truth, ~40MB) |
 | `pages/` | Clean Markdown versions of each occupation page |
 | `site/` | Static website (treemap visualization) |
@@ -34,7 +34,14 @@ The BLS OOH covers **342 occupations** spanning every sector of the US economy, 
 
 Each occupation is scored on a single **AI Exposure** axis from 0 to 10, measuring how much AI will reshape that occupation. The score considers both direct automation (AI doing the work) and indirect effects (AI making workers so productive that fewer are needed).
 
-A key signal is whether the job's work product is fundamentally digital — if the job can be done entirely from a home office on a computer, AI exposure is inherently high. Conversely, jobs requiring physical presence, manual skill, or real-time human interaction have a natural barrier.
+Instead of asking the model for one final score directly, the pipeline now asks for component judgments about:
+- digitality of the work
+- routine information processing
+- dependence on the physical world
+- dependence on human relationships
+- dependence on judgment and accountability
+
+The final exposure score is then derived in code from those components. This reduces how much the final number depends on a single highly prescriptive prompt.
 
 **Calibration examples from the dataset:**
 
