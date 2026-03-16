@@ -12,6 +12,17 @@ import csv
 import json
 
 
+def extract_components(score):
+    components = score.get("components", {})
+    return {
+        "agentic_output_potential": components.get("agentic_output_potential", score.get("agentic_output_potential", score.get("digitality"))),
+        "cognitive_synthesis_complexity": components.get("cognitive_synthesis_complexity", score.get("cognitive_synthesis_complexity", score.get("routine_information_processing"))),
+        "environmental_unpredictability": components.get("environmental_unpredictability", score.get("environmental_unpredictability", score.get("physical_world_dependency"))),
+        "ontological_human_necessity": components.get("ontological_human_necessity", score.get("ontological_human_necessity", score.get("human_relationship_dependency"))),
+        "systemic_accountability": components.get("systemic_accountability", score.get("systemic_accountability", score.get("judgment_accountability_dependency"))),
+    }
+
+
 def main():
     # Load AI exposure scores
     with open("scores.json") as f:
@@ -28,6 +39,7 @@ def main():
     for row in rows:
         slug = row["slug"]
         score = scores.get(slug, {})
+        components = extract_components(score)
         data.append({
             "title": row["title"],
             "slug": slug,
@@ -39,11 +51,18 @@ def main():
             "education": row["entry_education"],
             "exposure": score.get("exposure"),
             "exposure_rationale": score.get("rationale"),
-            "digitality": score.get("digitality"),
-            "routine_information_processing": score.get("routine_information_processing"),
-            "physical_world_dependency": score.get("physical_world_dependency"),
-            "human_relationship_dependency": score.get("human_relationship_dependency"),
-            "judgment_accountability_dependency": score.get("judgment_accountability_dependency"),
+            "components": components,
+            "agentic_output_potential": components["agentic_output_potential"],
+            "cognitive_synthesis_complexity": components["cognitive_synthesis_complexity"],
+            "environmental_unpredictability": components["environmental_unpredictability"],
+            "ontological_human_necessity": components["ontological_human_necessity"],
+            "systemic_accountability": components["systemic_accountability"],
+            # Legacy aliases kept for compatibility with older exports and UI code.
+            "digitality": components["agentic_output_potential"],
+            "routine_information_processing": components["cognitive_synthesis_complexity"],
+            "physical_world_dependency": components["environmental_unpredictability"],
+            "human_relationship_dependency": components["ontological_human_necessity"],
+            "judgment_accountability_dependency": components["systemic_accountability"],
             "url": row.get("url", ""),
         })
 

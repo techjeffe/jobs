@@ -472,6 +472,18 @@ const EXCLUDED_MANUAL_CATEGORIES = new Set([
   "transportation-and-material-moving",
 ]);
 
+function getEnvironmentalConstraint(d) {
+  return d.environmental_unpredictability ?? d.physical_world_dependency ?? null;
+}
+
+function getAgenticPotential(d) {
+  return d.agentic_output_potential ?? d.digitality ?? null;
+}
+
+function getCognitiveComplexity(d) {
+  return d.cognitive_synthesis_complexity ?? d.routine_information_processing ?? null;
+}
+
 const VIEW_CONFIG = {
   full: {
     label: "Full market",
@@ -480,18 +492,17 @@ const VIEW_CONFIG = {
   },
   lower_physical: {
     label: "Lower physical",
-    description: "Occupations with lower physical-world dependency (score 0-6).",
-    filter: d => d.physical_world_dependency == null || d.physical_world_dependency <= 6,
+    description: "Occupations with lower environmental unpredictability (score 0-6).",
+    filter: d => getEnvironmentalConstraint(d) == null || getEnvironmentalConstraint(d) <= 6,
   },
   knowledge_mix: {
     label: "Knowledge-work",
-    description: "Lower-physical roles with substantial digital or information-processing work.",
+    description: "Lower-environment roles with substantial agentic or cognitive work.",
     filter: d =>
-      (d.physical_world_dependency == null || d.physical_world_dependency <= 6) &&
+      (getEnvironmentalConstraint(d) == null || getEnvironmentalConstraint(d) <= 6) &&
       (
-        (d.digitality != null && d.digitality >= 6) ||
-        (d.routine_information_processing != null &&
-         d.routine_information_processing >= 6)
+        (getAgenticPotential(d) != null && getAgenticPotential(d) >= 6) ||
+        (getCognitiveComplexity(d) != null && getCognitiveComplexity(d) >= 6)
       ),
   },
 };

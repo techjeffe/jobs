@@ -23,50 +23,56 @@ load_dotenv()
 DEFAULT_MODEL = "google/gemini-3.1-flash-lite-preview"
 OUTPUT_FILE = "scores.json"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
-SCORE_VERSION = 2
+SCORE_VERSION = 3
 
 SYSTEM_PROMPT = """\
 You are an expert analyst evaluating how exposed different occupations are to \
-AI. You will be given a detailed description of an occupation from the Bureau \
+AI and autonomous agents. You will be given a detailed description of an occupation from the Bureau \
 of Labor Statistics.
 
-Your job is NOT to directly assign the final exposure score. Instead, assess \
-the occupation on five component dimensions from 0 to 10, using the occupation \
-description itself rather than stereotypes about the title.
+Your goal is to assess the occupation across five evolved dimensions from 0 to \
+10. Do not rely on job titles or prestige; analyze the specific tasks and \
+environmental constraints described.
 
 Scoring dimensions:
 
-- **digitality**: How much of the core work product is created, handled, or \
-delivered in digital form. 0 = almost entirely non-digital; 10 = almost \
-entirely digital.
-- **routine_information_processing**: How much of the core work consists of \
-structured or repeatable information processing, analysis, drafting, lookup, \
-documentation, or decision support. 0 = very little; 10 = most of the job.
-- **physical_world_dependency**: How much the core work depends on physical \
-presence, manual manipulation, site-specific activity, or operating in the \
-real world. 0 = almost none; 10 = essential to most of the job.
-- **human_relationship_dependency**: How much the core work depends on trust, \
-persuasion, empathy, negotiation, live coordination, or sustained interpersonal \
-relationships. 0 = almost none; 10 = essential to most of the job.
-- **judgment_accountability_dependency**: How much the core work depends on \
-high-stakes judgment, professional accountability, or domain responsibility \
-that is difficult to delegate. 0 = very little; 10 = central to the role.
+- **agentic_output_potential**: How much of the final value of this job is a \
+digital artifact or a command that can be executed via software. 0 = output is \
+strictly a physical change in the world; 10 = output is entirely digital and \
+can be delivered or executed by an AI agent.
+- **cognitive_synthesis_complexity**: The degree to which the job requires \
+high-dimensional reasoning, non-routine problem solving, or creative synthesis. \
+0 = simple, repetitive data retrieval; 10 = complex, multi-variable strategy \
+and novel solution architecture.
+- **environmental_unpredictability**: How much the work occurs in unstructured \
+physical environments. 0 = controlled settings; 10 = wild or volatile \
+environments with high-stakes physical variables.
+- **ontological_human_necessity**: The extent to which the core value depends \
+on a human being a human, including empathy, moral authority, shared physical \
+experience, or trust based on human liability. 0 = interaction is purely \
+functional or informational; 10 = the human-to-human bond is the primary product.
+- **systemic_accountability**: The degree of non-delegatable professional, \
+legal, or ethical liability. 0 = low-consequence errors; 10 = the buck stops \
+here for life-altering or system-critical decisions that a machine cannot \
+legally or ethically own.
 
 Important:
-- Do not assume all computer-based jobs are highly exposed.
-- Do not assume all physical jobs are protected.
-- Use the middle of the scale when evidence is mixed or ambiguous.
-- Base the scores on the occupation description, not on generic beliefs about \
-the profession.
+- Ignore the routine trap: assume AI can now handle complex, non-routine \
+cognitive tasks. Focus instead on whether the AI can execute the final step \
+(agentic output potential).
+- Structured vs. unstructured: a robot can flip a burger in a lab, but \
+struggling to fix a leak in a 100-year-old crawlspace is a very different kind \
+of problem.
+- Use the full scale aggressively based on the evidence in the text.
 
 Respond with ONLY a JSON object in this exact format, no other text:
 {
-  "digitality": <0-10 integer>,
-  "routine_information_processing": <0-10 integer>,
-  "physical_world_dependency": <0-10 integer>,
-  "human_relationship_dependency": <0-10 integer>,
-  "judgment_accountability_dependency": <0-10 integer>,
-  "rationale": "<2-3 sentences explaining the key factors>"
+  "agentic_output_potential": <0-10 integer>,
+  "cognitive_synthesis_complexity": <0-10 integer>,
+  "environmental_unpredictability": <0-10 integer>,
+  "ontological_human_necessity": <0-10 integer>,
+  "systemic_accountability": <0-10 integer>,
+  "rationale": "<2-3 sentences explaining how agentic potential and environmental constraints defined the score.>"
 }\
 """
 
@@ -79,26 +85,28 @@ def derive_exposure_score(components):
     """
     Convert component dimensions into the final exposure score.
 
-    Higher digital/routine work increases exposure; higher physical, human,
-    and judgment/accountability requirements act as barriers.
+    Agentic output potential is weighted most heavily. Cognitive complexity
+    still contributes because agentic systems increasingly handle non-routine
+    work, while environmental unpredictability, human necessity, and systemic
+    accountability act as barriers.
     """
     raw_score = (
-        0.30 * components["digitality"]
-        + 0.30 * components["routine_information_processing"]
-        + 0.15 * (10 - components["physical_world_dependency"])
-        + 0.15 * (10 - components["human_relationship_dependency"])
-        + 0.10 * (10 - components["judgment_accountability_dependency"])
+        0.45 * components["agentic_output_potential"]
+        + 0.20 * components["cognitive_synthesis_complexity"]
+        + 0.15 * (10 - components["environmental_unpredictability"])
+        + 0.10 * (10 - components["ontological_human_necessity"])
+        + 0.10 * (10 - components["systemic_accountability"])
     )
     return int(round(clamp(raw_score)))
 
 
 def normalize_component_scores(result):
     fields = [
-        "digitality",
-        "routine_information_processing",
-        "physical_world_dependency",
-        "human_relationship_dependency",
-        "judgment_accountability_dependency",
+        "agentic_output_potential",
+        "cognitive_synthesis_complexity",
+        "environmental_unpredictability",
+        "ontological_human_necessity",
+        "systemic_accountability",
     ]
     components = {}
     for field in fields:

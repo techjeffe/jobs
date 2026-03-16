@@ -17,7 +17,7 @@ This repository is best understood as an exploration tool, not a paper or a rigo
 1. **Scrape** (`scrape.py`) — Playwright (non-headless, BLS blocks bots) downloads raw HTML for all 342 occupation pages into `html/`.
 2. **Parse** (`parse_detail.py`, `process.py`) — BeautifulSoup converts raw HTML into clean Markdown files in `pages/`.
 3. **Tabulate** (`make_csv.py`) — Extracts structured fields (pay, education, job count, growth outlook, SOC code) into `occupations.csv`.
-4. **Score** (`score.py`) — Sends each occupation's Markdown description to an LLM (Gemini Flash via OpenRouter), asks for component scores (digitality, routine information processing, physical-world dependence, human-relationship dependence, judgment/accountability), and derives a final AI Exposure score from 0-10 in code. Results saved to `scores.json`.
+4. **Score** (`score.py`) — Sends each occupation's Markdown description to an LLM (Gemini Flash via OpenRouter), asks for component scores (agentic output potential, cognitive synthesis complexity, environmental unpredictability, ontological human necessity, systemic accountability), and derives a final AI Exposure score from 0-10 in code. Results saved to `scores.json`.
 5. **Build site data** (`build_site_data.py`) — Merges CSV stats and AI exposure scores into a compact `site/data.json` for the frontend.
 6. **Prompt export** (`make_prompt.py`) — Packages the dataset, current methodology, and summary statistics into `prompt.md`, a single markdown file designed for LLM analysis.
 7. **Website** (`site/index.html`) — Interactive treemap visualization where area = employment and color = AI exposure (green to red).
@@ -39,13 +39,13 @@ This repository is best understood as an exploration tool, not a paper or a rigo
 Each occupation is scored on a single **AI Exposure** axis from 0 to 10, measuring how much AI will reshape that occupation. The score considers both direct automation (AI doing the work) and indirect effects (AI making workers so productive that fewer are needed).
 
 Instead of asking the model for one final score directly, the pipeline now asks for component judgments about:
-- digitality of the work
-- routine information processing
-- dependence on the physical world
-- dependence on human relationships
-- dependence on judgment and accountability
+- agentic output potential
+- cognitive synthesis complexity
+- environmental unpredictability
+- ontological human necessity
+- systemic accountability
 
-The final exposure score is then derived in code from those components. This reduces how much the final number depends on a single highly prescriptive prompt and makes the scoring logic easier to inspect and compare across occupations.
+The final exposure score is then derived in code from those components. In the current version, agentic output potential carries the most weight, while environmental unpredictability, human necessity, and accountability act as barriers to delegation. This reduces how much the final number depends on a single highly prescriptive prompt and makes the scoring logic easier to inspect and compare across occupations.
 
 **What this score is not:**
 - It is not a prediction that a job disappears.

@@ -25,6 +25,22 @@ DEFAULT_NEW_FILE = "scores.json"
 DEFAULT_OUTPUT_JSON = "site/score-diff.json"
 DEFAULT_OUTPUT_HTML = "site/score-diff.html"
 
+CURRENT_COMPONENT_FIELDS = [
+    ("agentic_output_potential", "Agentic output"),
+    ("cognitive_synthesis_complexity", "Cognitive"),
+    ("environmental_unpredictability", "Environment"),
+    ("ontological_human_necessity", "Human necessity"),
+    ("systemic_accountability", "Accountability"),
+]
+
+LEGACY_COMPONENT_FIELDS = [
+    ("digitality", "Digital"),
+    ("routine_information_processing", "Routine info"),
+    ("physical_world_dependency", "Physical"),
+    ("human_relationship_dependency", "Relational"),
+    ("judgment_accountability_dependency", "Judgment"),
+]
+
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
@@ -411,13 +427,15 @@ function filterRows(rows) {
 
 function componentMarkup(row) {
   if (!row.new_components) return "—";
-  const labels = [
-    ["digitality", "Digital"],
-    ["routine_information_processing", "Routine info"],
-    ["physical_world_dependency", "Physical"],
-    ["human_relationship_dependency", "Relational"],
-    ["judgment_accountability_dependency", "Judgment"]
-  ];
+  const labels = row.component_labels && row.component_labels.length
+    ? row.component_labels
+    : [
+        ["digitality", "Digital"],
+        ["routine_information_processing", "Routine info"],
+        ["physical_world_dependency", "Physical"],
+        ["human_relationship_dependency", "Relational"],
+        ["judgment_accountability_dependency", "Judgment"]
+      ];
   return `<div class="component-list">` + labels.map(([key, label]) =>
     `<div>${label}: <strong>${row.new_components[key]}</strong></div>`
   ).join("") + `</div>`;
@@ -513,6 +531,25 @@ def weighted_average(rows, key):
     return weighted / total_weight
 
 
+def extract_components(row):
+    components = row.get("components", {})
+    current = {
+        "agentic_output_potential": components.get("agentic_output_potential", row.get("agentic_output_potential")),
+        "cognitive_synthesis_complexity": components.get("cognitive_synthesis_complexity", row.get("cognitive_synthesis_complexity")),
+        "environmental_unpredictability": components.get("environmental_unpredictability", row.get("environmental_unpredictability")),
+        "ontological_human_necessity": components.get("ontological_human_necessity", row.get("ontological_human_necessity")),
+        "systemic_accountability": components.get("systemic_accountability", row.get("systemic_accountability")),
+    }
+    if any(value is not None for value in current.values()):
+        return current, CURRENT_COMPONENT_FIELDS
+
+    legacy = {
+        key: row.get(key)
+        for key, _label in LEGACY_COMPONENT_FIELDS
+    }
+    return legacy, LEGACY_COMPONENT_FIELDS
+
+
 def build_payload(old_scores, new_scores, metadata, old_label, new_label):
     old_map = {row["slug"]: row for row in old_scores}
     new_map = {row["slug"]: row for row in new_scores}
@@ -532,6 +569,7 @@ def build_payload(old_scores, new_scores, metadata, old_label, new_label):
         old_row = old_map[slug]
         new_row = new_map[slug]
         meta = metadata.get(slug, {})
+        new_components, component_labels = extract_components(new_row)
         rows.append({
             "slug": slug,
             "title": new_row.get("title") or old_row.get("title") or slug,
@@ -548,17 +586,8 @@ def build_payload(old_scores, new_scores, metadata, old_label, new_label):
             "rank_delta": old_rank.get(slug, 0) - new_rank.get(slug, 0),
             "old_rationale": old_row.get("rationale", ""),
             "new_rationale": new_row.get("rationale", ""),
-            "new_components": new_row.get("components") or {
-                key: new_row[key]
-                for key in (
-                    "digitality",
-                    "routine_information_processing",
-                    "physical_world_dependency",
-                    "human_relationship_dependency",
-                    "judgment_accountability_dependency",
-                )
-                if key in new_row
-            },
+            "new_components": new_components,
+            "component_labels": component_labels,
         })
 
     rows.sort(key=lambda row: (-row["abs_delta"], -row["jobs"], row["title"]))

@@ -12,6 +12,15 @@ import csv
 import json
 
 
+COMPONENT_FIELDS = [
+    ("agentic_output_potential", "Agentic output potential", "agentic"),
+    ("cognitive_synthesis_complexity", "Cognitive synthesis complexity", "cognitive"),
+    ("environmental_unpredictability", "Environmental unpredictability", "environment"),
+    ("ontological_human_necessity", "Ontological human necessity", "human_necessity"),
+    ("systemic_accountability", "Systemic accountability", "accountability"),
+]
+
+
 def fmt_pay(pay):
     if pay is None:
         return "?"
@@ -60,13 +69,24 @@ def education_short(label):
     }.get(label, label or "?")
 
 
+def extract_components(score):
+    components = score.get("components", {})
+    current = {
+        "agentic_output_potential": components.get("agentic_output_potential", score.get("agentic_output_potential", score.get("digitality"))),
+        "cognitive_synthesis_complexity": components.get("cognitive_synthesis_complexity", score.get("cognitive_synthesis_complexity", score.get("routine_information_processing"))),
+        "environmental_unpredictability": components.get("environmental_unpredictability", score.get("environmental_unpredictability", score.get("physical_world_dependency"))),
+        "ontological_human_necessity": components.get("ontological_human_necessity", score.get("ontological_human_necessity", score.get("human_relationship_dependency"))),
+        "systemic_accountability": components.get("systemic_accountability", score.get("systemic_accountability", score.get("judgment_accountability_dependency"))),
+    }
+    return current, COMPONENT_FIELDS
+
+
 def component_line(record):
-    return (
-        f"digitality={record.get('digitality', '?')}, "
-        f"routine_info={record.get('routine_information_processing', '?')}, "
-        f"physical={record.get('physical_world_dependency', '?')}, "
-        f"relationships={record.get('human_relationship_dependency', '?')}, "
-        f"judgment={record.get('judgment_accountability_dependency', '?')}"
+    components = record.get("components", {})
+    labels = record.get("component_labels", [])
+    return ", ".join(
+        f"{short}={components.get(key, '?')}"
+        for key, _label, short in labels
     )
 
 
@@ -87,6 +107,7 @@ def main():
         slug = occ["slug"]
         row = csv_rows.get(slug, {})
         score = scores.get(slug, {})
+        components, labels = extract_components(score)
         pay = int(row["median_pay_annual"]) if row.get("median_pay_annual") else None
         jobs = int(row["num_jobs_2024"]) if row.get("num_jobs_2024") else None
         records.append({
@@ -100,11 +121,9 @@ def main():
             "education": row.get("entry_education", ""),
             "exposure": score.get("exposure"),
             "rationale": score.get("rationale", ""),
-            "digitality": score.get("digitality"),
-            "routine_information_processing": score.get("routine_information_processing"),
-            "physical_world_dependency": score.get("physical_world_dependency"),
-            "human_relationship_dependency": score.get("human_relationship_dependency"),
-            "judgment_accountability_dependency": score.get("judgment_accountability_dependency"),
+            "components": components,
+            "component_labels": labels,
+            **components,
             "url": occ.get("url", ""),
         })
 
@@ -134,11 +153,11 @@ def main():
         "In this fork, the model does not assign the final AI Exposure score directly. "
         "Instead, it scores five component dimensions from 0 to 10:"
     )
-    lines.append("- digitality")
-    lines.append("- routine information processing")
-    lines.append("- physical-world dependency")
-    lines.append("- human relationship dependency")
-    lines.append("- judgment/accountability dependency")
+    lines.append("- agentic output potential")
+    lines.append("- cognitive synthesis complexity")
+    lines.append("- environmental unpredictability")
+    lines.append("- ontological human necessity")
+    lines.append("- systemic accountability")
     lines.append("")
     lines.append(
         "The final AI Exposure score is then derived in code from those components. "
@@ -146,8 +165,9 @@ def main():
     )
     lines.append("")
     lines.append("Interpretation note:")
-    lines.append("- higher digitality and routine information processing tend to raise exposure")
-    lines.append("- higher physical, relational, and judgment-heavy work tend to lower exposure")
+    lines.append("- higher agentic output potential raises exposure most strongly")
+    lines.append("- cognitive synthesis complexity still matters because AI can increasingly handle non-routine work")
+    lines.append("- higher environmental unpredictability, human necessity, and accountability reduce delegability")
     lines.append("")
 
     if diff_summary:
@@ -190,13 +210,8 @@ def main():
 
     lines.append("### Average component scores")
     lines.append("")
-    for key, label in [
-        ("digitality", "Digitality"),
-        ("routine_information_processing", "Routine information processing"),
-        ("physical_world_dependency", "Physical-world dependency"),
-        ("human_relationship_dependency", "Human relationship dependency"),
-        ("judgment_accountability_dependency", "Judgment/accountability dependency"),
-    ]:
+    component_labels = records[0]["component_labels"] if records else COMPONENT_FIELDS
+    for key, label, _short in component_labels:
         vals = [r[key] for r in records if r[key] is not None]
         lines.append(f"- {label}: {avg(vals):.2f}")
     lines.append("")
