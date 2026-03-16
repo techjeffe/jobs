@@ -23,7 +23,7 @@ load_dotenv()
 DEFAULT_MODEL = "google/gemini-3.1-flash-lite-preview"
 OUTPUT_FILE = "scores.json"
 API_URL = "https://openrouter.ai/api/v1/chat/completions"
-SCORE_VERSION = 3
+SCORE_VERSION = 6
 MAX_ATTEMPTS = 3
 REQUIRED_FIELDS = [
     "agentic_output_potential",
@@ -46,9 +46,11 @@ environmental constraints described.
 Scoring dimensions:
 
 - **agentic_output_potential**: How much of the final value of this job is a \
-digital artifact or a command that can be executed via software. 0 = output is \
-strictly a physical change in the world; 10 = output is entirely digital and \
-can be delivered or executed by an AI agent.
+digital artifact or a command that can be executed via software, and would be \
+economically accepted as a substitute by the market. 0 = output is strictly a \
+physical change in the world; 10 = output is entirely digital and can be \
+delivered or executed by an AI agent in a form users would usually accept as a \
+replacement.
 - **cognitive_synthesis_complexity**: The degree to which the job requires \
 high-dimensional reasoning, non-routine problem solving, or creative synthesis. \
 0 = simple, repetitive data retrieval; 10 = complex, multi-variable strategy \
@@ -58,8 +60,9 @@ physical environments. 0 = controlled settings; 10 = wild or volatile \
 environments with high-stakes physical variables.
 - **ontological_human_necessity**: The extent to which the core value depends \
 on a human being a human, including empathy, moral authority, shared physical \
-experience, or trust based on human liability. 0 = interaction is purely \
-functional or informational; 10 = the human-to-human bond is the primary product.
+experience, authenticity, celebrity or identity value, or trust based on human \
+liability. 0 = interaction is purely functional or informational; 10 = the \
+human-to-human bond or the fact that a real human is involved is the primary product.
 - **systemic_accountability**: The degree of non-delegatable professional, \
 legal, or ethical liability. 0 = low-consequence errors; 10 = the buck stops \
 here for life-altering or system-critical decisions that a machine cannot \
@@ -69,6 +72,19 @@ Important:
 - Ignore the routine trap: assume AI can now handle complex, non-routine \
 cognitive tasks. Focus instead on whether the AI can execute the final step \
 (agentic output potential).
+- Be strict about agentic output potential: score this high only when the core \
+output is digital or can already be executed end-to-end through software. Do \
+not give a high score just because a task is repetitive, procedural, or could \
+theoretically be automated by specialized robotics in the future.
+- If the occupation's main value is a physical service, in-person manipulation, \
+or changing the real world on site, agentic output potential should usually be \
+low even if software can assist parts of the workflow.
+- Use a substitution test: ask whether an AI-produced output would usually be \
+treated by customers, employers, audiences, or institutions as an acceptable \
+replacement for the occupation. Technical imitation alone is not enough.
+- If authenticity, human identity, live presence, or interpersonal legitimacy \
+is part of the product, raise ontological human necessity and avoid inflating \
+agentic output potential.
 - Structured vs. unstructured: a robot can flip a burger in a lab, but \
 struggling to fix a leak in a 100-year-old crawlspace is a very different kind \
 of problem.
@@ -104,19 +120,39 @@ def derive_exposure_score(components):
     """
     Convert component dimensions into the final exposure score.
 
-    Agentic output potential is weighted most heavily. Cognitive complexity
-    still contributes because agentic systems increasingly handle non-routine
-    work, while environmental unpredictability, human necessity, and systemic
+    Agentic output potential is weighted most heavily, but real-world execution
+    barriers matter more than before so physical, high-variance work does not
+    get overrated simply for being procedural. Cognitive complexity contributes
+    modestly because agentic systems increasingly handle non-routine work,
+    while environmental unpredictability, human necessity, and systemic
     accountability act as barriers.
+
+    Low agentic-output occupations should also be ceiling-limited. If the final
+    value of the work is not something software can directly produce or execute,
+    the overall exposure should stay relatively low even when the occupation
+    does not depend heavily on human empathy or formal liability. Ontological
+    human necessity is weighted a bit more strongly so roles built around
+    authenticity, live presence, or interpersonal legitimacy do not get
+    overstated just because their output can be technically imitated.
     """
     raw_score = (
-        0.45 * components["agentic_output_potential"]
-        + 0.20 * components["cognitive_synthesis_complexity"]
-        + 0.15 * (10 - components["environmental_unpredictability"])
-        + 0.10 * (10 - components["ontological_human_necessity"])
+        0.38 * components["agentic_output_potential"]
+        + 0.10 * components["cognitive_synthesis_complexity"]
+        + 0.22 * (10 - components["environmental_unpredictability"])
+        + 0.20 * (10 - components["ontological_human_necessity"])
         + 0.10 * (10 - components["systemic_accountability"])
     )
-    return int(round(clamp(raw_score)))
+    raw_score = clamp(raw_score)
+
+    agentic = components["agentic_output_potential"]
+    if agentic <= 1:
+        raw_score = min(raw_score, 2.5)
+    elif agentic == 2:
+        raw_score = min(raw_score, 3.5)
+    elif agentic == 3:
+        raw_score = min(raw_score, 4.5)
+
+    return int(round(raw_score))
 
 
 def normalize_component_scores(result):

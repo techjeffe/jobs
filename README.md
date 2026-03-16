@@ -45,7 +45,41 @@ Instead of asking the model for one final score directly, the pipeline now asks 
 - ontological human necessity
 - systemic accountability
 
-The final exposure score is then derived in code from those components. In the current version, agentic output potential carries the most weight, while environmental unpredictability, human necessity, and accountability act as barriers to delegation. This reduces how much the final number depends on a single highly prescriptive prompt and makes the scoring logic easier to inspect and compare across occupations.
+The final exposure score is then derived in code from those components. This reduces how much the final number depends on a single prompt and makes the logic easier to inspect, debate, and tune.
+
+### Component definitions
+
+- **Agentic output potential**: Whether the final value of the job is something software can directly produce or execute, and whether the market would usually accept that output as a substitute.
+- **Cognitive synthesis complexity**: How much the role depends on high-dimensional reasoning, novel synthesis, or multi-variable judgment.
+- **Environmental unpredictability**: How messy, physical, site-specific, and hard to standardize the working environment is.
+- **Ontological human necessity**: Whether the value depends on a real human being there as a human, including empathy, trust, authenticity, identity, legitimacy, or live presence.
+- **Systemic accountability**: The amount of non-delegatable professional, legal, or ethical responsibility attached to the role.
+
+### Current weighting
+
+The current score is computed with this profile:
+
+```text
+0.38 * agentic_output_potential
++0.10 * cognitive_synthesis_complexity
++0.22 * (10 - environmental_unpredictability)
++0.20 * (10 - ontological_human_necessity)
++0.10 * (10 - systemic_accountability)
+```
+
+There is also an **agentic cap**:
+- if `agentic_output_potential <= 1`, the final score is capped at `2.5`
+- if `agentic_output_potential == 2`, the final score is capped at `3.5`
+- if `agentic_output_potential == 3`, the final score is capped at `4.5`
+
+### Why these weights
+
+- **Agentic output potential gets the most weight** because the central question is whether AI can produce the economically relevant final output, not just assist parts of the workflow.
+- **Environmental unpredictability is a strong barrier** because many occupations remain hard to automate mainly due to real-world execution, not because the reasoning is especially complex.
+- **Ontological human necessity also matters a lot** because some jobs are not just about producing an artifact; they depend on trust, authenticity, legitimacy, or live human presence.
+- **Systemic accountability matters, but less than the above** because liability can slow or limit substitution, even when the technical work is automatable.
+- **Cognitive synthesis complexity has a modest positive weight** because the scoring assumes advanced AI can increasingly handle non-routine cognitive work, so complexity alone is not treated as a major shield.
+- **The agentic cap exists to keep low-agentic physical jobs in a reasonable range**. A role should not score as highly exposed just because it lacks empathy or formal liability if the final value still depends on embodied, physical execution.
 
 **What this score is not:**
 - It is not a prediction that a job disappears.
@@ -63,8 +97,6 @@ The final exposure score is then derived in code from those components. In the c
 | 6-7 | High | Teachers, managers, accountants, engineers |
 | 8-9 | Very high | Software developers, paralegals, data analysts, editors |
 | 10 | Maximum | Medical transcriptionists |
-
-Average exposure across all 342 occupations under the current method: **4.5/10**.
 
 ## Visualization
 
