@@ -19,7 +19,8 @@ The BLS OOH covers **342 occupations** spanning every sector of the US economy, 
 3. **Tabulate** (`make_csv.py`) — Extracts structured fields (pay, education, job count, growth outlook, SOC code) into `occupations.csv`.
 4. **Score** (`score.py`) — Sends each occupation's Markdown description to an LLM (Gemini Flash via OpenRouter), asks for component scores (digitality, routine information processing, physical-world dependence, human-relationship dependence, judgment/accountability), and derives a final AI Exposure score from 0-10 in code. Results saved to `scores.json`.
 5. **Build site data** (`build_site_data.py`) — Merges CSV stats and AI exposure scores into a compact `site/data.json` for the frontend.
-6. **Website** (`site/index.html`) — Interactive treemap visualization where area = employment and color = AI exposure (green to red).
+6. **Prompt export** (`make_prompt.py`) — Packages the dataset, current methodology, and summary statistics into `prompt.md`, a single markdown file designed for LLM analysis.
+7. **Website** (`site/index.html`) — Interactive treemap visualization where area = employment and color = AI exposure (green to red).
 
 ## Key files
 
@@ -28,6 +29,7 @@ The BLS OOH covers **342 occupations** spanning every sector of the US economy, 
 | `occupations.json` | Master list of 342 occupations with title, URL, category, slug |
 | `occupations.csv` | Summary stats: pay, education, job count, growth projections |
 | `scores.json` | AI exposure scores, component subscores, and rationales for all 342 occupations |
+| `prompt.md` | Single-file export of the dataset and methodology for use with an LLM |
 | `html/` | Raw HTML pages from BLS (source of truth, ~40MB) |
 | `pages/` | Clean Markdown versions of each occupation page |
 | `site/` | Static website (treemap visualization) |
@@ -66,6 +68,10 @@ The main visualization is an interactive **treemap** where:
 - **Layout** groups occupations by BLS category
 - **Hover** shows detailed tooltip with pay, jobs, outlook, education, exposure score, and LLM rationale
 
+## Prompt export
+
+[`prompt.md`](prompt.md) packages this fork's dataset, component-based scoring method, aggregate statistics, and full occupation list into a single markdown file intended for copy-pasting into an LLM. It also includes a summary of how the current scoring differs from the earlier approach.
+
 ## Setup
 
 ```
@@ -98,6 +104,9 @@ uv run python build_site_data.py
 
 # Compare the current scores against the pre-refactor baseline
 python compare_scores.py
+
+# Export the full dataset and methodology into prompt.md for LLM analysis
+python make_prompt.py
 
 # Serve the site locally
 cd site && python -m http.server 8000
