@@ -2,7 +2,9 @@
 
 Analyzing how susceptible every occupation in the US economy is to AI and automation, using data from the Bureau of Labor Statistics [Occupational Outlook Handbook](https://www.bls.gov/ooh/) (OOH).
 
-**Live demo: [joshkale.github.io/jobs](https://joshkale.github.io/jobs/)**
+This fork builds on Josh Kale's restoration of the original project after Andrej Karpathy briefly shared it and took it down. Josh preserved the pipeline, data, and visualization so the work did not disappear.
+
+**Live demo: [jobs-techjeffes-projects.vercel.app](https://jobs-techjeffes-projects.vercel.app/)**
 
 ![AI Exposure Treemap](jobs.png)
 
